@@ -29,8 +29,6 @@ export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ positi
     const cellMerged = useRecoilValue(scoreAtom);
     const countNumberSVG = useMemo(() => {
         switch (cellMerged) {
-            case 0:
-                return number0SVG;
             case 1:
                 return number1SVG;
             case 2:
@@ -47,8 +45,10 @@ export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ positi
                 return number7SVG;
             case 8:
                 return number8SVG;
-            default:
+            case 9:
                 return number9SVG;
+            default:
+                return number0SVG;
         }
     }, [cellMerged]);
 

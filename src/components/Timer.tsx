@@ -51,9 +51,16 @@ export const Timer = () => {
         <Container position={[0, 330]}>
             <Graphics draw={drawBg} />
             <Graphics draw={draw} />
-            <Container position={[totalLength * (1 - timeProgress), 0]}>
-                <ParticleEmitter colors={['#7fbd1f', '#ffffff']} size={20} count={2} emitterX={300} emitterY={300} />
-            </Container>
+            <ParticleEmitter
+                colors={['#7fbd1f', '#ffffff']}
+                size={20}
+                count={2}
+                emitterX={10}
+                emitterY={10}
+                lifeTime={1000}
+                emitTime={TOTAL_TIME}
+                x={totalLength * (1 - timeProgress) - totalLength / 2}
+            />
         </Container>
     );
 };

@@ -31,11 +31,11 @@ export const SuccessUI: FunctionComponent = () => {
         <>
             {gameState === GameState.CTA_SUCCESS && (
                 <>
-                    <AnimationContainer position={centerView} alpha={[0, 1]} loop={false} delay={100} duration={500}>
+                    <AnimationContainer position={centerView} alpha={[0, 1]} loop={false} delay={0} duration={500}>
                         <Overlay />
                     </AnimationContainer>
                     <Container scale={uiScale} x={centerView[0]} y={centerView[1]}>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={100} duration={700}>
+                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={30} duration={700}>
                             <SVGSprite src={successBg} width={500} height={500} />
                         </AnimationContainer>
                         <ParticleEmitter

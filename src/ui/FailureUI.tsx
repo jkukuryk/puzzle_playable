@@ -34,11 +34,11 @@ export const FailureUI: FunctionComponent = () => {
         <>
             {gameState === GameState.CTA_FAILURE && (
                 <>
-                    <AnimationContainer position={centerView} alpha={[0, 1]} loop={false} delay={100} duration={500}>
+                    <AnimationContainer position={centerView} alpha={[0, 1]} loop={false} delay={0} duration={500}>
                         <Overlay />
                     </AnimationContainer>
                     <Container scale={uiScale} x={centerView[0]} y={centerView[1]}>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={100} duration={700}>
+                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={50} duration={700}>
                             <SVGSprite src={failureBg} width={500} height={500} />
                         </AnimationContainer>
                         <AnimationContainer scale={fadeAnimationScale} loop={false} delay={200} duration={700}>

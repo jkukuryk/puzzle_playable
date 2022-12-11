@@ -4,7 +4,7 @@ import { particleColors } from 'constants/levelMatrix';
 import gsap from 'gsap';
 import { isTouchDevice } from 'helper/pointer';
 import { Coordinate, setCoordinate } from 'helper/types';
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { gridLevelAtom, lastLevelUpdateAtom, scoreAtom } from 'root/atoms/levelItemAtoms';
 import { gameScaleAtom, centerViewAtom } from 'root/atoms/viewAtoms';

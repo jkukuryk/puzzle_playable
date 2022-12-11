@@ -26,7 +26,7 @@ module.exports = merge(common, {
         new HtmlWebpackPlugin({
             template: './public/index.html',
             filename: './playable-' + getTime() + '.html',
-            title: config.name,
+            title: 'playable',
             inlineSource: '.(js|css|png|jpg|svg|mp3|gif)$',
         }),
         new HtmlInlineScriptPlugin(),

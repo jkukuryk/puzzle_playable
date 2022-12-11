@@ -1,5 +1,6 @@
 import { noop } from 'lodash';
-import { SoundFile, SoundManager } from 'root/sound/soundManager';
+import { getSoundAssets } from 'root/sound/soundList';
+import { SoundManager } from 'root/sound/soundManager';
 import { getScreenSize, refreshScreenSize } from './screen';
 
 export enum ProtocolTypes {
@@ -28,21 +29,18 @@ let initialCallback = noop;
 
 let androidLink = '';
 let iosLink = '';
-let soundList = [] as SoundFile[];
 let config = {
     onVisible: noop,
     onHidden: noop,
 };
-export function addSoundList(files: SoundFile[]) {
-    soundList = files;
-}
+
 export function init(callback: () => void, appConfig?: { onVisible: () => void; onHidden: () => void }) {
     setProtocol();
     config = { ...config, ...appConfig };
 
     initialCallback = () => {
         isInitialized = true;
-        SoundManager.init(soundList);
+        SoundManager.init(getSoundAssets());
         callback();
     };
 

@@ -16,6 +16,7 @@ import letterEx from 'assets/ui/failLetterEx.png';
 import { ScaleSprite } from 'components/ScaleSprite';
 import { AnimationContainer } from 'components/AnimationContainer';
 import { ParticleEmitter } from 'components/ParticleEmitter';
+import { ONE_SECOND } from 'constants/time';
 
 const VIEW_WIDTH = 800;
 const MAX_SCALE = 1.3;
@@ -38,34 +39,36 @@ export const FailureUI: FunctionComponent = () => {
                         <Overlay />
                     </AnimationContainer>
                     <Container scale={uiScale} x={centerView[0]} y={centerView[1]}>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={50} duration={700}>
-                            <SVGSprite src={failureBg} width={500} height={500} />
+                        <AnimationContainer duration={ONE_SECOND * 3} rotation={[-5, 5, -5]}>
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={50} duration={700}>
+                                <SVGSprite src={failureBg} width={500} height={500} />
+                            </AnimationContainer>
+                            <ParticleEmitter
+                                colors={['#E86A17', '#FA8132', '#CD5D12', '#ffffff']}
+                                size={60}
+                                count={60}
+                                emitterX={60}
+                                emitterY={60}
+                                force={10}
+                                delay={300}
+                                lifeTime={3000}
+                            />
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={200} duration={700}>
+                                <ScaleSprite image={letterF} width={500} height={500} />
+                            </AnimationContainer>
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={250} duration={650}>
+                                <ScaleSprite image={letterA} width={500} height={500} />
+                            </AnimationContainer>
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={300} duration={600}>
+                                <ScaleSprite image={letterI} width={500} height={500} />
+                            </AnimationContainer>
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={350} duration={550}>
+                                <ScaleSprite image={letterL} width={500} height={500} />
+                            </AnimationContainer>
+                            <AnimationContainer scale={fadeAnimationScale} loop={false} delay={400} duration={500}>
+                                <ScaleSprite image={letterEx} width={500} height={500} />
+                            </AnimationContainer>
                         </AnimationContainer>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={200} duration={700}>
-                            <ScaleSprite image={letterF} width={500} height={500} />
-                        </AnimationContainer>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={250} duration={650}>
-                            <ScaleSprite image={letterA} width={500} height={500} />
-                        </AnimationContainer>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={300} duration={600}>
-                            <ScaleSprite image={letterI} width={500} height={500} />
-                        </AnimationContainer>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={350} duration={550}>
-                            <ScaleSprite image={letterL} width={500} height={500} />
-                        </AnimationContainer>
-                        <AnimationContainer scale={fadeAnimationScale} loop={false} delay={400} duration={500}>
-                            <ScaleSprite image={letterEx} width={500} height={500} />
-                        </AnimationContainer>
-                        <ParticleEmitter
-                            colors={['#E86A17', '#FA8132', '#CD5D12', '#ffffff']}
-                            size={60}
-                            count={60}
-                            emitterX={60}
-                            emitterY={60}
-                            force={10}
-                            delay={300}
-                            lifeTime={3000}
-                        />
                     </Container>
                 </>
             )}

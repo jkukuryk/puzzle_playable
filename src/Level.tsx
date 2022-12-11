@@ -10,6 +10,8 @@ import { GameState, gameStateAtom } from './atoms/gameStateAtom';
 import gsap from 'gsap';
 import { TotalScore } from 'components/TotalScore';
 import { Timer } from 'components/Timer';
+import { SoundsType } from './sound/soundList';
+import { SoundManager } from './sound/soundManager';
 export const GAP = CELL_SIZE / 18;
 const SPACER = GAP * 2 + CELL_SIZE;
 
@@ -72,8 +74,13 @@ export const Level = () => {
                     alpha: 0,
                     y: 300,
                     duration: 1,
-                    delay: 0.7,
+                    delay: 0.2,
                 }).then(() => {
+                    if (nextState === GameState.CTA_SUCCESS) {
+                        SoundManager.play(SoundsType.success);
+                    } else {
+                        SoundManager.play(SoundsType.failure);
+                    }
                     setGameState(nextState);
                 });
             }

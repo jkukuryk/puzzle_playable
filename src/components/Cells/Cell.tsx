@@ -8,6 +8,8 @@ import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } 
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { gridLevelAtom, lastLevelUpdateAtom, scoreAtom } from 'root/atoms/levelItemAtoms';
 import { gameScaleAtom, centerViewAtom } from 'root/atoms/viewAtoms';
+import { SoundsType } from 'root/sound/soundList';
+import { SoundManager } from 'root/sound/soundManager';
 import { CellShape } from './CellShape';
 
 const Z_INDEX_DRAG = 1000;
@@ -103,6 +105,7 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
                 setGridLevel(newGridLevel);
                 setLastLevelUpdate(performance.now());
                 setScore(gridLevel.length - afterInvalidCell.length);
+                SoundManager.play(SoundsType.merge);
             } else {
                 setTranslation(dragCell.position);
             }
@@ -156,9 +159,10 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
             {!isActive && (
                 <Container zIndex={Z_INDEX_DRAG + 100} position={displayPosition}>
                     <ParticleEmitter
-                        size={30}
+                        size={50}
                         colors={particleColors[cellId]}
                         count={15}
+                        lifeTime={3000}
                         emitterX={CELL_SIZE * 0.3}
                         emitterY={CELL_SIZE * 0.3}
                     />

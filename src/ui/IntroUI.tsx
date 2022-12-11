@@ -10,6 +10,8 @@ import { Overlay } from 'components/UIOverlay';
 import { AnimationContainer } from 'components/AnimationContainer';
 import { ONE_SECOND } from 'constants/time';
 import gsap, { Power0, Back } from 'gsap';
+import { SoundManager } from 'root/sound/soundManager';
+import { SoundsType } from 'root/sound/soundList';
 
 const INTRO_WIDTH = 1200;
 const MAX_SCALE = 1.3;
@@ -64,6 +66,7 @@ export const IntroUI: FunctionComponent = () => {
 
     const startGame = useCallback(() => {
         if (!clickDisabled) {
+            SoundManager.play(SoundsType.merge, 0, true);
             setClickDisabled(true);
             if (overlayRef.current) {
                 gsap.to(overlayRef.current, { alpha: 0, duration: 1, delay: 0.5, ease: Power0.easeIn }).then(() => {

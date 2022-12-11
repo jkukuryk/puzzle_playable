@@ -47,7 +47,7 @@ export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ positi
                 return number7SVG;
             case 8:
                 return number8SVG;
-            case 9:
+            default:
                 return number9SVG;
         }
     }, [cellMerged]);

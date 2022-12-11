@@ -6,7 +6,7 @@ import { isTouchDevice } from 'helper/pointer';
 import { Coordinate, setCoordinate } from 'helper/types';
 import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { gridLevelAtom, lastLevelUpdateAtom } from 'root/atoms/levelItemAtoms';
+import { gridLevelAtom, lastLevelUpdateAtom, scoreAtom } from 'root/atoms/levelItemAtoms';
 import { gameScaleAtom, centerViewAtom } from 'root/atoms/viewAtoms';
 import { CellShape } from './CellShape';
 
@@ -23,6 +23,7 @@ let lastDragPosition = setCoordinate(0, 0);
 export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
     //Atoms-------
     const gameScale = useRecoilValue(gameScaleAtom);
+    const [score, setScore] = useRecoilState(scoreAtom);
     const gameCenter = useRecoilValue(centerViewAtom);
     const [gridLevel, setGridLevel] = useRecoilState(gridLevelAtom);
     const [lastLevelUpdate, setLastLevelUpdate] = useRecoilState(lastLevelUpdateAtom);
@@ -103,25 +104,16 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
                 const afterInvalidCell = newGridLevel.filter((cell) => {
                     return cell.active;
                 });
-                console.log(afterInvalidCell.length);
                 setGridLevel(newGridLevel);
                 setLastLevelUpdate(performance.now());
-                console.log('add merge!!');
-
-                // SoundManager.play(SoundsType.move, 0, true);
-
-                // if (!invalidCell) {
-                //     setLevelWin(true);
-                //     SoundManager.play(SoundsType.goal);
-                // }
+                setScore(gridLevel.length - afterInvalidCell.length);
             } else {
-                console.log('back', dragCell);
                 setTranslation(dragCell.position);
             }
         }
 
         setIsDragging(false);
-    }, [gridLevel, onMove, id, cellId, setGridLevel, setLastLevelUpdate]);
+    }, [gridLevel, onMove, id, cellId, setGridLevel, setLastLevelUpdate, setScore]);
 
     const startDrag = useCallback(() => {
         if (isTouchDevice()) {

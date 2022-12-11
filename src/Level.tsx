@@ -3,8 +3,8 @@ import { Container } from '@inlet/react-pixi';
 import { levelMatrixGrid } from 'constants/levelMatrix';
 import { setCoordinate } from 'helper/types';
 import { GridCell } from 'constants/cell';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { gridLevelAtom, startLevelTimerAtom } from './atoms/levelItemAtoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { gridLevelAtom, scoreAtom, startLevelTimerAtom } from './atoms/levelItemAtoms';
 import { Cell, CELL_SIZE } from 'components/Cells/Cell';
 import { GameState, gameStateAtom } from './atoms/gameStateAtom';
 import gsap from 'gsap';
@@ -17,11 +17,16 @@ export const Level = () => {
     const [levelGrid, setLevelGrid] = useState([] as GridCell[]);
     const setGridData = useSetRecoilState(gridLevelAtom);
     const startLevelTimer = useSetRecoilState(startLevelTimerAtom);
+    const cellMerged = useRecoilValue(scoreAtom);
+    const MAX_SCORE = 10;
+    const levelRef = useRef(undefined);
+
     const start = useMemo(() => {
         const rows = levelMatrixGrid.length;
         const cols = levelMatrixGrid[0].length;
         return getStartPosition(rows, cols);
     }, []);
+
     useEffect(() => {
         let id = 0;
         const rows = levelMatrixGrid.length;
@@ -44,7 +49,6 @@ export const Level = () => {
         setGridData(levelCells);
     }, [setGridData, start]);
 
-    const levelRef = useRef(undefined);
     useEffect(() => {
         if (gameState === GameState.PLAY && levelRef.current) {
             gsap.to(levelRef.current, {
@@ -57,6 +61,19 @@ export const Level = () => {
             });
         }
     }, [startLevelTimer, gameState]);
+
+    useEffect(() => {
+        if (cellMerged === MAX_SCORE && levelRef.current) {
+            gsap.to(levelRef.current, {
+                alpha: 0,
+                y: 300,
+                duration: 1,
+                delay: 0.1,
+            }).then(() => {
+                setGameState(GameState.CTA_SUCCESS);
+            });
+        }
+    }, [cellMerged, setGameState]);
 
     if (gameState !== GameState.PLAY) {
         return null;

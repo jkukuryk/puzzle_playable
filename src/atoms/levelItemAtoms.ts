@@ -1,19 +1,21 @@
 import { atom } from 'recoil';
-import { Coordinate } from 'helper/types';
-export enum LevelShape {
-    HEART = 'heart',
-}
-export type GradientCellData = {
-    position: Coordinate;
-    shape: LevelShape;
-    id: number;
-};
+import { GridCell } from 'constants/cell';
+
+export const gridLevelAtom = atom({
+    key: 'gridLevelAtom',
+    default: [] as GridCell[],
+});
+
 export const lastLevelUpdateAtom = atom({
     key: 'lastLevelUpdateAtom',
     default: 0,
 });
 
-export const gridLevelAtom = atom({
-    key: 'gridLevelAtom',
-    default: [] as GradientCellData[],
+export const startLevelTimerAtom = atom({
+    key: 'startLevelTimerAtom',
+    default: 0,
+});
+export const scoreAtom = atom({
+    key: 'scoreAtom',
+    default: 0,
 });

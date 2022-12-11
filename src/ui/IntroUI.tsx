@@ -1,5 +1,5 @@
-import { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
+import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { gameStateAtom, GameState } from 'root/atoms/gameStateAtom';
 import { centerViewAtom, viewSizeAtom } from 'root/atoms/viewAtoms';
 import { SVGSprite } from 'components/SvgSprite';
@@ -15,12 +15,13 @@ const INTRO_WIDTH = 1200;
 const MAX_SCALE = 1.3;
 
 export const IntroUI: FunctionComponent = () => {
-    const gameState = useRecoilValue(gameStateAtom);
+    const [gameState, setGameState] = useRecoilState(gameStateAtom);
     const centerView = useRecoilValue(centerViewAtom);
     const viewSize = useRecoilValue(viewSizeAtom);
     const overlayRef = useRef(undefined);
     const infoRef = useRef(undefined);
     const buttonRef = useRef(undefined);
+    const [clickDisabled, setClickDisabled] = useState(false);
 
     const uiScale = useMemo(() => {
         const prc = Math.min(MAX_SCALE, viewSize[0] / INTRO_WIDTH);
@@ -62,22 +63,21 @@ export const IntroUI: FunctionComponent = () => {
     }, [gameState]);
 
     const startGame = useCallback(() => {
-        if (overlayRef.current) {
-            gsap.to(overlayRef.current, { alpha: 0, duration: 1, delay: 0.5, ease: Power0.easeIn }).then(() => {
-                console.log('SHOW LEVEL');
-            });
+        if (!clickDisabled) {
+            setClickDisabled(true);
+            if (overlayRef.current) {
+                gsap.to(overlayRef.current, { alpha: 0, duration: 1, delay: 0.5, ease: Power0.easeIn }).then(() => {
+                    setGameState(GameState.PLAY);
+                });
+            }
+            if (infoRef.current) {
+                gsap.to(infoRef.current, { alpha: 0, y: 300, duration: 1, delay: 0.2, ease: Back.easeIn });
+            }
+            if (buttonRef.current) {
+                gsap.to(buttonRef.current, { alpha: 0, y: 420, duration: 1.1, delay: 0.1, ease: Back.easeIn });
+            }
         }
-        if (infoRef.current) {
-            gsap.to(
-                infoRef.current,
-
-                { alpha: 0, y: 300, duration: 1, delay: 0.2, ease: Back.easeIn }
-            );
-        }
-        if (buttonRef.current) {
-            gsap.to(buttonRef.current, { alpha: 0, y: 420, duration: 1.1, delay: 0.1, ease: Back.easeIn });
-        }
-    }, []);
+    }, [clickDisabled, setGameState]);
     return (
         <>
             {gameState === GameState.INTRO && (

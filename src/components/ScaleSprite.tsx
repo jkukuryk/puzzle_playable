@@ -35,7 +35,7 @@ export const ScaleSprite: FunctionComponent<Props> = ({
     loop = true,
     filters = [] as PIXI.Filter[],
     zIndex = 100,
-    alpha,
+    alpha = 1,
     scale = [1, 1],
     tint,
 }) => {

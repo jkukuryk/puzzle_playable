@@ -1,12 +1,12 @@
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 
-import { Stage, Container, Sprite } from '@inlet/react-pixi';
+import { Stage, Container } from '@inlet/react-pixi';
 import { addResizeListener } from 'helper/adProtocols';
 import { sendToSubscriber, RecoilEventsSubscription } from './Subscriber';
 import { Coordinate } from 'helper/types';
 
 import { gameSize } from 'constants/resolution';
-import levelBackground from 'assets/background/levelBackground.jpg';
+import { LevelBackground } from 'components/LevelBackground';
 
 const BG_COLOR = 0xcfeffc;
 const BG_RATIO = [800, 800];
@@ -63,12 +63,10 @@ export const StageContainer: FunctionComponent = ({ children }) => {
             width={screenSize[0]}
             height={screenSize[1]}
         >
-            <Sprite
+            <LevelBackground
                 position={[screenSize[0] / 2, screenSize[1] / 2]}
-                source={levelBackground}
                 width={backgroundSize.width}
                 height={backgroundSize.height}
-                anchor={0.5}
             />
             <Container scale={gameScale}>{children}</Container>
         </Stage>

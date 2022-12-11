@@ -52,7 +52,7 @@ export function init(callback: () => void, appConfig?: { onVisible: () => void; 
         createVisibleListeners();
         createResizeListener();
     };
-    onReady(() => setTimeout(onReadyCallback, 1));
+    onReady(onReadyCallback);
 }
 
 function setProtocol() {

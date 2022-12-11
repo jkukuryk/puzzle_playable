@@ -62,8 +62,21 @@ export const IntroUI: FunctionComponent = () => {
     }, [gameState]);
 
     const startGame = useCallback(() => {
-        console.log('startTimer when level will be build');
-        console.log('start fade Animation');
+        if (overlayRef.current) {
+            gsap.to(overlayRef.current, { alpha: 0, duration: 1, delay: 0.5, ease: Power0.easeIn }).then(() => {
+                console.log('SHOW LEVEL');
+            });
+        }
+        if (infoRef.current) {
+            gsap.to(
+                infoRef.current,
+
+                { alpha: 0, y: 300, duration: 1, delay: 0.2, ease: Back.easeIn }
+            );
+        }
+        if (buttonRef.current) {
+            gsap.to(buttonRef.current, { alpha: 0, y: 420, duration: 1.1, delay: 0.1, ease: Back.easeIn });
+        }
     }, []);
     return (
         <>

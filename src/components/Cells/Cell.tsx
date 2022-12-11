@@ -1,11 +1,11 @@
 import { Container, useTick } from '@inlet/react-pixi';
-import { ParticleDrop } from 'components/ParticleDrop';
+import { ParticleEmitter } from 'components/ParticleEmitter';
 import { particleColors } from 'constants/levelMatrix';
 import gsap from 'gsap';
 import { isTouchDevice } from 'helper/pointer';
 import { Coordinate, setCoordinate } from 'helper/types';
 import { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { gridLevelAtom, lastLevelUpdateAtom, scoreAtom } from 'root/atoms/levelItemAtoms';
 import { gameScaleAtom, centerViewAtom } from 'root/atoms/viewAtoms';
 import { CellShape } from './CellShape';
@@ -23,7 +23,7 @@ let lastDragPosition = setCoordinate(0, 0);
 export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
     //Atoms-------
     const gameScale = useRecoilValue(gameScaleAtom);
-    const [score, setScore] = useRecoilState(scoreAtom);
+    const setScore = useSetRecoilState(scoreAtom);
     const gameCenter = useRecoilValue(centerViewAtom);
     const [gridLevel, setGridLevel] = useRecoilState(gridLevelAtom);
     const [lastLevelUpdate, setLastLevelUpdate] = useRecoilState(lastLevelUpdateAtom);
@@ -33,9 +33,8 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
     const [isFloating, setIsFloating] = useState(false);
     const [moveTranslation, setTranslation] = useState<Coordinate>([position[0], position[1]]);
     const [displayPosition, setDisplayPosition] = useState<Coordinate>([position[0], position[1]]);
-    const [gridPosition, setGridPosition] = useState<Coordinate>([position[0], position[1]]);
-    const [showParticle, setShowParticle] = useState(false);
     const cellRef = useRef();
+    const [isActive, setIsActive] = useState(true);
 
     const updatePosition = useCallback(() => {
         const diffX = displayPosition[0] - moveTranslation[0];
@@ -59,7 +58,6 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
 
     const onMove = useCallback(
         (e) => {
-            setShowParticle(false);
             let touchPosition = setCoordinate(0, 0);
             const [clientX, clientY] = getPointerPosition(e);
 
@@ -74,8 +72,6 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
     );
 
     const onDrop = useCallback(() => {
-        setShowParticle(true);
-
         if (isTouchDevice()) {
             document.removeEventListener('touchmove', onMove);
             document.removeEventListener('touchend', onDrop);
@@ -126,7 +122,7 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
         setIsDragging(true); //hold only information about active listener
         setIsFloating(true); //hold information about position states
     }, [onDrop, onMove]);
-    const [isActive, setIsActive] = useState(true);
+
     useEffect(() => {
         if (lastLevelUpdate) {
             const cell = gridLevel.find((cell) => cell.id === id);
@@ -159,12 +155,12 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
 
             {!isActive && (
                 <Container zIndex={Z_INDEX_DRAG + 100} position={displayPosition}>
-                    <ParticleDrop
-                        size={CELL_SIZE}
+                    <ParticleEmitter
+                        size={30}
                         colors={particleColors[cellId]}
-                        count={8}
-                        emitterX={CELL_SIZE}
-                        emitterY={CELL_SIZE}
+                        count={15}
+                        emitterX={CELL_SIZE * 0.3}
+                        emitterY={CELL_SIZE * 0.3}
                     />
                 </Container>
             )}

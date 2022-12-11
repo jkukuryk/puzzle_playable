@@ -11,10 +11,15 @@ export const lastLevelUpdateAtom = atom({
     default: 0,
 });
 
+export const timerActiveAtom = atom({
+    key: 'timerActiveAtom',
+    default: false,
+});
 export const startLevelTimerAtom = atom({
     key: 'startLevelTimerAtom',
     default: 0,
 });
+
 export const scoreAtom = atom({
     key: 'scoreAtom',
     default: 0,

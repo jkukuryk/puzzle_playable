@@ -78,31 +78,31 @@ export const IntroUI: FunctionComponent = () => {
             }
         }
     }, [clickDisabled, setGameState]);
+
+    if (gameState !== GameState.INTRO) {
+        return null;
+    }
     return (
         <>
-            {gameState === GameState.INTRO && (
-                <>
-                    <Container ref={overlayRef} x={centerView[0]} y={centerView[1]}>
-                        <Overlay />
+            <Container ref={overlayRef} x={centerView[0]} y={centerView[1]}>
+                <Overlay />
+            </Container>
+            <Container scale={uiScale} x={centerView[0]} y={centerView[1]}>
+                <Container ref={infoRef}>
+                    <SVGSprite src={tutorialInfo} width={1004} height={238} />
+                </Container>
+                <AnimationContainer
+                    onClick={startGame}
+                    y={[0, -15, 0, -15, 0]}
+                    scale={{ x: [1, 1.1, 1, 1.1, 1], y: [1, 1.1, 1, 1.1, 1] }}
+                    sleep={ONE_SECOND}
+                    duration={ONE_SECOND}
+                >
+                    <Container ref={buttonRef}>
+                        <SVGSprite src={startButton} width={536} height={138} />
                     </Container>
-                    <Container scale={uiScale} x={centerView[0]} y={centerView[1]}>
-                        <Container ref={infoRef}>
-                            <SVGSprite src={tutorialInfo} width={1004} height={238} />
-                        </Container>
-                        <AnimationContainer
-                            onClick={startGame}
-                            y={[0, -15, 0, -15, 0]}
-                            scale={{ x: [1, 1.1, 1, 1.1, 1], y: [1, 1.1, 1, 1.1, 1] }}
-                            sleep={ONE_SECOND}
-                            duration={ONE_SECOND}
-                        >
-                            <Container ref={buttonRef}>
-                                <SVGSprite src={startButton} width={536} height={138} />
-                            </Container>
-                        </AnimationContainer>
-                    </Container>
-                </>
-            )}
+                </AnimationContainer>
+            </Container>
         </>
     );
 };

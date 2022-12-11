@@ -1,5 +1,4 @@
-import { AnimatedSprite, Container, Sprite, _ReactPixi } from '@inlet/react-pixi';
-import * as PIXI from 'pixi.js';
+import { Container, Sprite, _ReactPixi } from '@inlet/react-pixi';
 
 import { FunctionComponent, useMemo } from 'react';
 
@@ -9,13 +8,9 @@ type Props = {
     rotation?: number;
     x?: number;
     y?: number;
-    images?: string[];
-    image?: string;
-    anchor: _ReactPixi.PointLike;
+    image: string;
+    anchor?: _ReactPixi.PointLike;
     onClick?: () => void;
-    fps?: number;
-    loop?: boolean;
-    filters?: PIXI.Filter[];
     zIndex?: number;
     scale?: [number, number];
     alpha?: number;
@@ -26,14 +21,10 @@ export const ScaleSprite: FunctionComponent<Props> = ({
     height,
     x = 0,
     y = 0,
-    images,
-    anchor,
+    anchor = 0.5,
     image,
     onClick,
-    fps = 1,
     rotation,
-    loop = true,
-    filters = [] as PIXI.Filter[],
     zIndex = 100,
     alpha = 1,
     scale = [1, 1],
@@ -59,28 +50,12 @@ export const ScaleSprite: FunctionComponent<Props> = ({
                     onClick();
                 }
             }}
-            filters={filters}
             interactive={!!onClick}
             zIndex={zIndex}
             scale={scale}
             alpha={alpha}
         >
-            {!!images && (
-                <AnimatedSprite
-                    {...spriteProps}
-                    height={height}
-                    width={width}
-                    anchor={anchor}
-                    images={images}
-                    isPlaying={true}
-                    animationSpeed={(1 / 60) * fps}
-                    loop={loop}
-                />
-            )}
-
-            {!!image && (
-                <Sprite {...spriteProps} key={image} height={height} width={width} anchor={anchor} source={image} />
-            )}
+            <Sprite {...spriteProps} key={image} height={height} width={width} anchor={anchor} source={image} />
         </Container>
     );
 };

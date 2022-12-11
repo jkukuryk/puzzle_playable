@@ -16,7 +16,7 @@ import number6SVG from 'assets/ui/numbers/6.svg';
 import number7SVG from 'assets/ui/numbers/7.svg';
 import number8SVG from 'assets/ui/numbers/8.svg';
 import number9SVG from 'assets/ui/numbers/9.svg';
-import { ParticleDrop } from './ParticleDrop';
+import { ParticleEmitter } from './ParticleEmitter';
 
 const scale = 0.62;
 const svgWidth = 391 * scale;
@@ -60,10 +60,10 @@ export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ positi
             <SVGSprite width={svgWidth} height={svgHeight} src={totalSVG} />
             <Container position={[102, 1]}>
                 <SVGSprite width={svgNumberWidth} height={svgNumberHeight} src={countNumberSVG} />
-                <ParticleDrop
-                    colors={['#1ea7e1']}
+                <ParticleEmitter
+                    colors={['#1ea7e1', '#ffffff']}
                     size={svgNumberWidth}
-                    count={8}
+                    count={3}
                     emitterX={1}
                     emitterY={1}
                     key={cellMerged}

@@ -21,9 +21,10 @@ export type ParticleItem = {
 type Props = {
     particle: ParticleItem;
     size: number;
+    delay?: number;
 };
 
-export const Particle: FunctionComponent<Props> = ({ particle, size }) => {
+export const Particle: FunctionComponent<Props> = ({ particle, size, delay = 0 }) => {
     const {
         vector,
         speed,
@@ -38,8 +39,9 @@ export const Particle: FunctionComponent<Props> = ({ particle, size }) => {
         image,
         color,
     } = particle;
-    const startAnimation = useMemo(() => performance.now(), []);
+    const startAnimation = useMemo(() => performance.now() + delay, [delay]);
     const [active, setActive] = useState(true);
+    const [emitted, setEmitted] = useState(false);
 
     const [anim, setAnim] = useState({
         position: position,
@@ -48,10 +50,11 @@ export const Particle: FunctionComponent<Props> = ({ particle, size }) => {
         rotation: rotationStart,
     });
     const updateParticle = useCallback(() => {
-        const progress = (performance.now() - startAnimation) / (lifeTime * 1000);
+        const progress = (performance.now() - startAnimation) / lifeTime;
         if (progress > 1) {
             setActive(false);
-        } else {
+        } else if (progress > 0) {
+            setEmitted(true);
             const alpha = lerp(alphaStart, alphaEnd, progress);
             const scale = lerp(scaleStart, scaleEnd, progress);
             const rotation = lerp(rotationStart, rotationEnd, progress);
@@ -74,7 +77,7 @@ export const Particle: FunctionComponent<Props> = ({ particle, size }) => {
     ]);
 
     useTick(updateParticle, active);
-    if (!active) {
+    if (!active || !emitted) {
         return null;
     }
 

@@ -1,5 +1,5 @@
-# playable-scavenger-hunt-core
+# puzzle level
 
--   subrepository for Scavenger Hunt Playable
-
-git submodule update --init // --recursive
+1. Start with `npm install` or `yarn install`
+2. Run with `npm start`
+3. Build with `npm run build`

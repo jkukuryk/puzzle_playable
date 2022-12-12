@@ -6,6 +6,7 @@ import { isTouchDevice } from 'helper/pointer';
 import { Coordinate, setCoordinate } from 'helper/types';
 import { FunctionComponent, useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { gameActiveAtom } from 'root/atoms/gameStateAtom';
 import { gridLevelAtom, lastLevelUpdateAtom, scoreAtom } from 'root/atoms/levelItemAtoms';
 import { gameScaleAtom, centerViewAtom } from 'root/atoms/viewAtoms';
 import { SoundsType } from 'root/sound/soundList';
@@ -14,7 +15,7 @@ import { CellShape } from './CellShape';
 
 const Z_INDEX_DRAG = 1000;
 const Z_INDEX_IDLE = 100;
-export const CELL_SIZE = 130;
+export const CELL_SIZE = 208;
 
 type Props = {
     position: Coordinate;
@@ -25,6 +26,7 @@ let lastDragPosition = setCoordinate(0, 0);
 export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
     //Atoms-------
     const gameScale = useRecoilValue(gameScaleAtom);
+    const isGameActive = useRecoilValue(gameActiveAtom);
     const setScore = useSetRecoilState(scoreAtom);
     const gameCenter = useRecoilValue(centerViewAtom);
     const [gridLevel, setGridLevel] = useRecoilState(gridLevelAtom);
@@ -137,16 +139,25 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
                         duration: 0.3,
                     });
                 }
+            } else {
+                setIsActive(true);
+                if (cellRef.current) {
+                    gsap.to(cellRef.current, {
+                        alpha: 1,
+                        duration: 0.3,
+                    });
+                    setTranslation(position);
+                }
             }
         }
-    }, [gridLevel, id, lastLevelUpdate]);
+    }, [gridLevel, id, lastLevelUpdate, position]);
 
     return (
         <>
             <Container
                 position={displayPosition}
-                mousedown={startDrag}
-                pointerdown={startDrag}
+                mousedown={isGameActive ? startDrag : undefined}
+                pointerdown={isGameActive ? startDrag : undefined}
                 interactive={isActive}
                 zIndex={isFloating ? Z_INDEX_DRAG : Z_INDEX_IDLE}
                 ref={cellRef}
@@ -159,12 +170,12 @@ export const Cell: FunctionComponent<Props> = ({ position, id, cellId }) => {
             {!isActive && (
                 <Container zIndex={Z_INDEX_DRAG + 100} position={displayPosition}>
                     <ParticleEmitter
-                        size={50}
+                        size={65}
                         colors={particleColors[cellId]}
                         count={15}
                         lifeTime={3000}
-                        emitterX={CELL_SIZE * 0.3}
-                        emitterY={CELL_SIZE * 0.3}
+                        emitterX={CELL_SIZE * 0.4}
+                        emitterY={CELL_SIZE * 0.4}
                     />
                 </Container>
             )}

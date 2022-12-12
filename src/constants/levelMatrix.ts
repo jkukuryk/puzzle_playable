@@ -1,3 +1,5 @@
+import { shuffle } from 'lodash';
+
 export enum CellTypes {
     TRIANGLE = 'triangle',
     RHOMBUS = 'rhombus',
@@ -14,7 +16,7 @@ export const shapesList = [
     CellTypes.START, //4 -star
     CellTypes.DIAMOND, //5 -diamond
 ];
-export const levelMatrixGrid = [
+export let levelMatrixGrid = [
     [1, 0, 2, 3],
     [2, 4, 1, 4],
     [4, 3, 0, 1],
@@ -29,3 +31,23 @@ export const particleColors = [
     ['#ffffff', '#ff9d5e', '#f07625', '#f1863f', '#c95b12', '#e86a17', '#ea7c33'], //4 -star
     ['#ffffff', '#d75a5a', '#d44c4c', '#ef7676', '#b04040', '#c83e3e', '#cc4d4d', '#aa3030'], //5 -diamond
 ];
+export function shuffleLevel() {
+    const rows = levelMatrixGrid.length;
+    const cols = levelMatrixGrid[0].length;
+    let allCells = [] as number[];
+    levelMatrixGrid.forEach((row) => {
+        allCells = allCells.concat(row);
+    });
+    allCells = shuffle(allCells);
+    const newLevelGrid = [] as number[][];
+    let i = 0;
+    for (let row = 0; row < rows; row++) {
+        const newRow = [] as number[];
+        for (let col = 0; col < cols; col++) {
+            newRow.push(allCells[i]);
+            i++;
+        }
+        newLevelGrid.push(newRow);
+    }
+    levelMatrixGrid = newLevelGrid;
+}

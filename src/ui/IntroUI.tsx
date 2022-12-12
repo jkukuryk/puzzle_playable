@@ -32,6 +32,7 @@ export const IntroUI: FunctionComponent = () => {
 
     useEffect(() => {
         if (gameState === GameState.INTRO) {
+            setClickDisabled(false);
             if (overlayRef.current) {
                 gsap.fromTo(
                     overlayRef.current,

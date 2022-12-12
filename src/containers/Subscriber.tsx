@@ -1,7 +1,7 @@
 import { valuesIn } from 'lodash';
 
 import { FunctionComponent, useCallback, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { gameStateAtom, GameState } from '../atoms/gameStateAtom';
 import { viewSizeRectAtom, viewSizeAtom, centerViewAtom, viewOrientationAtom, gameScaleAtom } from '../atoms/viewAtoms';
 
@@ -22,11 +22,13 @@ export const Subscriber: FunctionComponent = () => {
     const setCenterView = useSetRecoilState(centerViewAtom);
     const setViewOrientation = useSetRecoilState(viewOrientationAtom);
     const setGameScale = useSetRecoilState(gameScaleAtom);
-    const setGameState = useSetRecoilState(gameStateAtom);
+    const [gameState, setGameState] = useRecoilState(gameStateAtom);
 
     useEffect(() => {
-        setGameState(GameState.INTRO);
-    }, [setGameState]);
+        if (gameState === GameState.LOADER) {
+            setGameState(GameState.INTRO);
+        }
+    }, [gameState, setGameState]);
 
     const changeState = useCallback(
         (atomKey, value: any) => {

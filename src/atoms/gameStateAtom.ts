@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 
 export enum GameState {
     LOADER = 'loader',
@@ -13,16 +13,10 @@ export const gameStateAtom = atom({
     default: GameState.LOADER,
 });
 
-export const debugPhysicAtom = atom({
-    key: 'debugPhysicAtom',
-    default: false,
-});
-export const gameOverStateAtom = atom({
-    key: 'gameOverAtom',
-    default: null as null | 'won' | 'failed',
-});
-
-export const levelSuccessAtom = atom({
-    key: 'levelSuccessAtom',
-    default: false,
+export const gameActiveAtom = selector({
+    key: 'gameActiveAtom',
+    get: ({ get }) => {
+        const state = get(gameStateAtom);
+        return state === GameState.PLAY;
+    },
 });

@@ -18,12 +18,10 @@ import number8SVG from 'assets/ui/numbers/8.svg';
 import number9SVG from 'assets/ui/numbers/9.svg';
 import { ParticleEmitter } from './ParticleEmitter';
 
-const scale = 0.62;
-const svgWidth = 391 * scale;
-const svgHeight = 57 * scale;
-const numberScale = 0.62;
-const svgNumberWidth = 37 * numberScale;
-const svgNumberHeight = 35 * numberScale;
+const svgWidth = 391;
+const svgHeight = 57;
+const svgNumberWidth = 37;
+const svgNumberHeight = 35;
 
 export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ position }) => {
     const cellMerged = useRecoilValue(scoreAtom);
@@ -58,8 +56,15 @@ export const TotalScore: FunctionComponent<{ position: Coordinate }> = ({ positi
             zIndex={9999}
         >
             <SVGSprite width={svgWidth} height={svgHeight} src={totalSVG} />
-            <Container position={[102, 1]}>
-                <SVGSprite width={svgNumberWidth} height={svgNumberHeight} src={countNumberSVG} />
+            <Container position={[163, 0]}>
+                {cellMerged < 10 ? (
+                    <SVGSprite width={svgNumberWidth} height={svgNumberHeight} src={countNumberSVG} />
+                ) : (
+                    <Container scale={0.7}>
+                        <SVGSprite width={svgNumberWidth} height={svgNumberHeight} src={number1SVG} x={-16} />
+                        <SVGSprite width={svgNumberWidth} height={svgNumberHeight} src={number0SVG} x={16} />
+                    </Container>
+                )}
                 <ParticleEmitter
                     colors={['#1ea7e1', '#ffffff']}
                     size={svgNumberWidth}
